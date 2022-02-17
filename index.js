@@ -82,40 +82,84 @@ squares[pacmanCurrentIndex].classList.add("pacman");
 
 function control(e) {
   squares[pacmanCurrentIndex].classList.remove("pacman");
-  //   if (e.keyCode === 40) {
-  //     console.log("pressed down");
-  //   } else if (e.keyCode === 38) {
-  //     console.log("presed up");
-  //   } else if (e.keyCode === 37) {
-  //     console.log("pressed left");
-  //   } else if (e.keyCode === 39) {
-  //     console.log("pressed right");
-  //   }
-  // }
-
-  // If forfot "break", the script will run from the case where the criterion is met and will run the cases below regardless if a criterion was met.
   switch (e.keyCode) {
     case 40:
       console.log("pressed down");
-      if (pacmanCurrentIndex + width < width * width) pacmanCurrentIndex += 28;
+      if (
+        !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair") &&
+        !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
+        pacmanCurrentIndex + width < width * width
+      )
+        pacmanCurrentIndex += width;
       break;
 
     case 38:
       console.log("pressed up");
-      if (pacmanCurrentIndex - width >= 1) pacmanCurrentIndex -= 28;
+      if (
+        //first statement means "if not contains"
+        !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair") &&
+        !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
+        pacmanCurrentIndex - width >= 0
+      )
+        pacmanCurrentIndex -= width;
       break;
 
     case 37:
       console.log("pressed left");
-      if (pacmanCurrentIndex % width !== 0) pacmanCurrentIndex -= 1;
+      if (
+        !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair") &&
+        !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
+        pacmanCurrentIndex % width !== 0
+      )
+        pacmanCurrentIndex -= 1;
+      if (pacmanCurrentIndex === 364) {
+        pacmanCurrentIndex = 391;
+      }
       break;
 
     case 39:
       console.log("pressed right");
-      if (pacmanCurrentIndex - width >= 1) pacmanCurrentIndex -= 28;
+      if (
+        !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair") &&
+        !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
+        pacmanCurrentIndex % width < width - 1
+      )
+        pacmanCurrentIndex += 1;
+      if (pacmanCurrentIndex === 391) {
+        pacmanCurrentIndex = 364;
+      }
       break;
   }
   squares[pacmanCurrentIndex].classList.add("pacman");
+  pacDotEaten();
 }
 
 document.addEventListener("keyup", control);
+
+function pacDotEaten() {
+  if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
+    squares[pacmanCurrentIndex].classList.remove("pac-dot");
+    score++;
+    scoreDisplay.innerHTML = score;
+  }
+}
+
+class Ghost {
+  constructor(className, startIndex, speed) {
+    this.className = className;
+    this.startIndex = startIndex;
+    this.speed = speed;
+  }
+}
+
+const ghosts = [
+  new Ghost("blinky", 348, 250),
+  new Ghost("pinky", 376, 400),
+  new Ghost("inky", 351, 300),
+  new Ghost("clyde", 379, 500),
+];
+
+// draw my ghosts onto my grid
+ghosts.forEach((ghost) =>
+  squares[ghost.startIndex].classList.add(ghost.className)
+);
