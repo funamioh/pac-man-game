@@ -2,6 +2,7 @@ const width = 28;
 const grid = document.querySelector(".grid");
 const scoreDisplay = document.getElementById("score");
 let squares = [];
+let score = 0;
 
 // 0 - pacdots
 // 1 - wall
@@ -149,6 +150,9 @@ class Ghost {
     this.className = className;
     this.startIndex = startIndex;
     this.speed = speed;
+    this.currentIndex = startIndex;
+    this.isScared = false;
+    this.timerId = NaN;
   }
 }
 
@@ -160,6 +164,37 @@ const ghosts = [
 ];
 
 // draw my ghosts onto my grid
-ghosts.forEach((ghost) =>
-  squares[ghost.startIndex].classList.add(ghost.className)
-);
+ghosts.forEach((ghost) => {
+  squares[ghost.startIndex].classList.add(ghost.className);
+  squares[ghost.startIndex].classList.add("ghost");
+});
+
+//move the ghosts
+ghosts.forEach((ghost) => moveGhost(ghost));
+
+function moveGhost(ghost) {
+  console.log("moved ghost");
+  const directions = [-1, +1, -width, +width];
+  let direction = directions[Math.floor(Math.random() * directions.length)];
+  console.log(direction);
+
+  ghost.timerId = setInterval(function () {
+    //all our code
+    //if the next square does not contain a wall or a ghost
+    if (
+      !squares[ghost.currentIndex + direction].classList.contains("wall") &&
+      !squares[ghost.currentIndex + direction].classList.contains("ghost")
+    ) {
+      //remove ghost
+      squares[ghost.currentIndex].classList.remove(ghost.className);
+      squares[ghost.currentIndex].classList.remove("ghost");
+
+      //add direction to current Index
+      ghost.currentIndex += direction;
+
+      //add ghost class
+      squares[ghost.currentIndex].classList.add(ghost.className);
+      squares[ghost.currentIndex].classList.add("ghost");
+    } else direction = directions[Math.floor(Math.random() * directions.length)];
+  }, ghost.speed);
+}
