@@ -1,10 +1,21 @@
 <html>
   <head>
     <link rel="stylesheet" href="index.css" />
+    <title>Pac-Man Game</title>
   </head>
   <body>
-    <h3>Score:<span id="score"></span></h3>
-    <div class="grid"></div>
+    <span><a id="rule" href="">Rule</a></span>
+    <button onclick="changeLanguage('eng')">English</button>
+    <button onclick="changeLanguage('ja')">日本語</button>
+    <p id="siteContent">
+      <!-- once your score reaches 274, you win 
+     There are 4 green dots called "power pellet" near the four corners of the field. It's 10 point. Also, for 10 seconds from the pacman swallow power pellet, it can swallow ghosts as well. You get 1 point everytime the pacman stamps on each small small green square.-->
+      <!-- If the pacman is swallowed by a ghost, which is not scared, youlose-->
+    </p>
+    <div class="game">
+      <h3 id="scoreLang">Score:<span id="score"></span></h3>
+      <div class="grid"></div>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>

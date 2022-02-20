@@ -1,7 +1,8 @@
 html,
 body {
-  margin: 10;
+  margin: auto;
   padding: 10;
+  max-width: 500px;
 }
 
 .grid {

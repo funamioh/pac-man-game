@@ -1,3 +1,38 @@
+// Create a function to change language
+function changeLanguage(lang) {
+  location.hash = lang;
+  location.reload();
+}
+
+// Define the language
+var language = {
+  eng: {
+    welcome: "Hey, welcome to the Pac-man game!",
+    rule: "Rule",
+    scoreLang: "Score:",
+  },
+  ja: {
+    welcome: "パックマンゲームへようこそ〜〜",
+    rule: "遊び方",
+    scoreLang: "スコア:",
+  },
+};
+
+// Check if a hash value exists in the URL
+if (window.location.hash) {
+  //set the content of the webpage
+  //depending on the hash value
+  if (window.location.hash == "#eng") {
+    siteContent.textContent = language.eng.welcome;
+    rule.textContent = language.eng.rule;
+    scoreLang.textContent = language.eng.scoreLang;
+  } else if (window.location.hash == "#ja") {
+    siteContent.textContent = language.ja.welcome;
+    rule.textContent = language.ja.rule;
+    scoreLang.textContent = language.ja.scoreLang;
+  }
+}
+
 const width = 28;
 const grid = document.querySelector(".grid");
 const scoreDisplay = document.getElementById("score");
@@ -246,6 +281,7 @@ function moveGhost(ghost) {
       squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
     }
     checkForGameOver();
+    checkForWin();
   }, ghost.speed);
 }
 
@@ -266,7 +302,7 @@ function checkForGameOver() {
 }
 
 function checkForWin() {
-  if (score === 274) {
+  if (score >= 274) {
     //stop each ghost
     ghosts.forEach((ghost) => clearInterval(ghost.timerId));
     //remove the eventlistener for the control function
